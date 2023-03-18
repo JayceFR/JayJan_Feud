@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -42,6 +43,13 @@ public class joinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_join);
     }
 
+    public void lobby_page(String room_id){
+        Intent intent = new Intent(this, lobbyActivity.class);
+        intent.putExtra("host", false);
+        intent.putExtra("room", room_id);
+        startActivity(intent);
+    }
+
     public void post_data(String name, String room){
         RequestQueue queue = Volley.newRequestQueue(this.getBaseContext());
         String post_url = "https://gabaafeud.mysticjayce.repl.co/user/" + user_id;
@@ -58,6 +66,7 @@ public class joinActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 Toast.makeText(joinActivity.this, "Response" + response, Toast.LENGTH_LONG).show();
+                lobby_page(room);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -100,8 +109,6 @@ public class joinActivity extends AppCompatActivity {
 
             queue.add(jsonObjectRequest);
         }
-
-
     }
 
 }

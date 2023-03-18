@@ -57,6 +57,7 @@
         android:inputType="textMultiLine"
         android:text=""
         android:textAlignment="center"
+        android:visibility="visible"
         android:textColor="@color/jayblue"
         android:textColorHint="@color/teal_700"
         android:textSize="23sp"

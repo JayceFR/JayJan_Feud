@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,8 @@ public class lobbyActivity extends AppCompatActivity {
 
     public boolean host = false;
     public boolean free = true;
+    public CountDownTimer countDownTimer;
+    public long timeLeftInMilliseconds = 60000;
     public String room_id = "";
 
     @Override
@@ -38,6 +42,9 @@ public class lobbyActivity extends AppCompatActivity {
             //Toast.makeText(lobbyActivity.this, "Ya we rock", Toast.LENGTH_SHORT).show();
             Button start_btn = (Button) findViewById(R.id.start_btn);
             start_btn.setVisibility(View.VISIBLE);
+        }
+        else{
+            start_quest_timer();
         }
         update();
     }
@@ -122,6 +129,45 @@ public class lobbyActivity extends AppCompatActivity {
             }
         });
         queue.add(jsonObjectRequest2);
+    }
+
+    public void check_if_game_started(){
+        RequestQueue queue = Volley.newRequestQueue(this.getBaseContext());
+        String post_url = "https://gabaafeud.mysticjayce.repl.co/room/" + room_id;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, post_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(lobbyActivity.this, "Response" + response.substring(response.length()-6, response.length()-1), Toast.LENGTH_SHORT).show();
+                if (response.substring(response.length()-6, response.length()-1).equals("true}")){
+                    countDownTimer.cancel();
+                    start_game();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(lobbyActivity.this, "Error has occured here ", Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    public void start_quest_timer(){
+        countDownTimer = new CountDownTimer(timeLeftInMilliseconds, 1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMilliseconds = l;
+                check_if_game_started();
+            }
+
+            @Override
+            public void onFinish() {
+                Toast.makeText(lobbyActivity.this,"TIME UP! ",Toast.LENGTH_SHORT ).show();
+
+
+            }
+        }.start();
     }
 
 }

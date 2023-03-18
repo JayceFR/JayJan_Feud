@@ -110,6 +110,7 @@ public class gameActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 String s = soup(response);
                 quest_box.setText(s);
+                answer_box.setVisibility(View.VISIBLE);
                 timeLeftInMilliseconds = 60000;
                 start_quest_timer(0);
                 //Toast.makeText(gameActivity.this, "Response" + response, Toast.LENGTH_SHORT).show();
@@ -156,11 +157,11 @@ public class gameActivity extends AppCompatActivity {
     public void display_answer(){
         timeLeftInMilliseconds = 60000;
         title_bar.setText("CHECK YOUR ANSWERS!");
-        quest_box.setText(answer_box.getText().toString());
+        quest_box.setText(answer_box.getText().toString() + "\n" + "Check Your Answer With The Answer List Below and Enter Your Score" );
         EditText score_box = (EditText) findViewById(R.id.score_box);
         score_box.setText("");
         score_box.setVisibility(View.VISIBLE);
-        answer_box.setText("Check Your Answer With The Answer List Below and Enter Your Score. Exchange your device with others for verifying");
+        answer_box.setVisibility(View.INVISIBLE);
         String ans = "";
         for (int i = 0; i< answers.length; i++){
             ans += answers[i] + "\n";
