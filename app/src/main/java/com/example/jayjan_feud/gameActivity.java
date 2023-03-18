@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -27,12 +30,17 @@ public class gameActivity extends AppCompatActivity {
 
     public CountDownTimer countDownTimer;
     public TextView timer;
+    public TextView title_bar;
+    public TextView quest_box;
+    public EditText answer_box;
+    public TextView answer_text;
     public String room_id;
     //public long timeLeftInMilliseconds = 960000;
     public long timeLeftInMilliseconds = 60000;
     public int count = 0;
     public String[] quest_list;
     public String[] answers;
+    public int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +54,11 @@ public class gameActivity extends AppCompatActivity {
         timer = (TextView) findViewById(R.id.timer);
         quest_list = new String[8];
         answers = new String[8];
+        quest_box = (TextView) findViewById(R.id.quest_box);
+        answer_box = (EditText) findViewById(R.id.answer_txt);
+        title_bar = (TextView) findViewById(R.id.title_bar);
+        answer_text = (TextView) findViewById(R.id.answer_box);
+
         load_quests();
 
 
@@ -64,12 +77,16 @@ public class gameActivity extends AppCompatActivity {
 
     public String soup(String response){
         response = response.replaceAll("\"", "");
-        response = response.substring(1, response.length()-1);
+        response = response.replaceAll("null", "");
+        response = response.substring(1, response.length()-2);
         String[] response_list = response.split(",");
         String question = response_list[1].split(":")[1];
         for (int i = 0; i < 8; i++) {
             String ans = response_list[i+2].split(":")[1];
-            answers[i] = ans;
+            if (!ans.trim().equals("null")){
+                answers[i] = ans;
+            }
+
         }
         Toast.makeText(gameActivity.this, question, Toast.LENGTH_LONG).show();
         return question;
@@ -78,7 +95,7 @@ public class gameActivity extends AppCompatActivity {
     public void print_quest(){
         RequestQueue queue = Volley.newRequestQueue(this.getBaseContext());
         //String post_url = "https://gabaafeud.mysticjayce.repl.co/user/1";
-        TextView quest_box = (TextView) findViewById(R.id.quest_box);
+        //TextView quest_box = (TextView) findViewById(R.id.quest_box);
         String post_url = "https://gabaafeud.mysticjayce.repl.co/quest/" + quest_list[count].trim();
         JSONObject postData = new JSONObject();
         Toast.makeText(gameActivity.this, "quest_lidt" + quest_list[count], Toast.LENGTH_SHORT).show();
@@ -93,7 +110,8 @@ public class gameActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 String s = soup(response);
                 quest_box.setText(s);
-                start_timer();
+                timeLeftInMilliseconds = 60000;
+                start_quest_timer(0);
                 //Toast.makeText(gameActivity.this, "Response" + response, Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
@@ -132,7 +150,28 @@ public class gameActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void start_timer(){
+    //Question -> 0
+    //Answer -> 1
+
+    public void display_answer(){
+        timeLeftInMilliseconds = 60000;
+        title_bar.setText("CHECK YOUR ANSWERS!");
+        quest_box.setText(answer_box.getText().toString());
+        EditText score_box = (EditText) findViewById(R.id.score_box);
+        score_box.setText("");
+        score_box.setVisibility(View.VISIBLE);
+        answer_box.setText("Check Your Answer With The Answer List Below and Enter Your Score. Exchange your device with others for verifying");
+        String ans = "";
+        for (int i = 0; i< answers.length; i++){
+            ans += answers[i] + "\n";
+        }
+        answer_text.setText(ans);
+        start_quest_timer(1);
+    }
+
+
+
+    public void start_quest_timer(int choice){
         countDownTimer = new CountDownTimer(timeLeftInMilliseconds, 1000) {
             @Override
             public void onTick(long l) {
@@ -143,6 +182,29 @@ public class gameActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Toast.makeText(gameActivity.this,"TIME UP! ",Toast.LENGTH_SHORT ).show();
+                if(choice == 0 ){
+                    display_answer();
+                }
+                if(choice == 1){
+                    if (count < 7){
+                        count ++;
+                        answer_text.setText("");
+                        answer_box.setText("");
+                        title_bar.setText("FEUD TIME");
+                        EditText score_box = (EditText) findViewById(R.id.score_box);
+                        String score_entered = score_box.getText().toString();
+                        if (score_entered.trim().equals("")){
+                            score_entered = "0";
+                        }
+                        score += Integer.parseInt(score_entered);
+                        score_box.setVisibility(View.INVISIBLE);
+                        TextView score_handler = (TextView) findViewById(R.id.score_holder);
+                        score_handler.setText(Integer.toString(score));
+                        load_quests();
+                    }
+
+                }
+
             }
         }.start();
     }

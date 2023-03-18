@@ -39,6 +39,7 @@
         android:layout_height="152dp"
         android:layout_marginTop="20dp"
         android:text=""
+        android:textAlignment="center"
         android:textColor="@color/jayblue"
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,23 +47,62 @@
         app:layout_constraintTop_toBottomOf="@+id/timer" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="326dp"
-        android:layout_height="261dp"
+        android:id="@+id/answer_txt"
+        android:layout_width="342dp"
+        android:layout_height="100dp"
         android:layout_marginTop="32dp"
         android:ems="10"
-        android:text=""
-        android:hint="Enter Your Answer Here ..."
-        android:textColorHint="@color/teal_700"
-        android:textColor="@color/jayblue"
-        android:textSize="23sp"
-        android:inputType="textMultiLine"
         android:gravity="start|top"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:hint="Enter Your Answer Here ..."
+        android:inputType="textMultiLine"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/jayblue"
+        android:textColorHint="@color/teal_700"
+        android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quest_box"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/quest_box" />
+
+    <TextView
+        android:id="@+id/answer_box"
+        android:layout_width="342dp"
+        android:layout_height="218dp"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/jayblue"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/answer_txt" />
+
+    <EditText
+        android:id="@+id/score_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="Example -> 29"
+        android:textColorHint="@color/teal_700"
+        android:textSize="23sp"
+        android:textColor="@color/jayblue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/answer_box" />
+
+    <TextView
+        android:id="@+id/score_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textColor="@color/jayblue"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
