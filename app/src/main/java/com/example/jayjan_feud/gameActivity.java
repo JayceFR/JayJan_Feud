@@ -155,7 +155,7 @@ public class gameActivity extends AppCompatActivity {
     //Answer -> 1
 
     public void display_answer(){
-        timeLeftInMilliseconds = 60000;
+        timeLeftInMilliseconds = 30000;
         title_bar.setText("CHECK YOUR ANSWERS!");
         quest_box.setText(answer_box.getText().toString() + "\n" + "Check Your Answer With The Answer List Below and Enter Your Score" );
         EditText score_box = (EditText) findViewById(R.id.score_box);
@@ -202,6 +202,9 @@ public class gameActivity extends AppCompatActivity {
                         TextView score_handler = (TextView) findViewById(R.id.score_holder);
                         score_handler.setText(Integer.toString(score));
                         load_quests();
+                    }
+                    else{
+
                     }
 
                 }

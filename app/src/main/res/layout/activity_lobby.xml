@@ -39,7 +39,6 @@
         android:layout_height="428dp"
         android:layout_marginTop="32dp"
         android:text=""
-        android:textAlignment="center"
         android:textColor="@color/jayblue"
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"

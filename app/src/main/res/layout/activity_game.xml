@@ -72,7 +72,6 @@
         android:layout_height="218dp"
         android:layout_marginTop="8dp"
         android:text=""
-        android:textAlignment="center"
         android:textColor="@color/jayblue"
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
